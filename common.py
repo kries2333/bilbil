@@ -28,9 +28,10 @@ class Common():
             if r.text != "":
                 js = json.loads(r.text)
                 data = js['data']
-                room_id = data['items'][0]['roomid']
-                uname = data['items'][0]['uname']
-                is_signed = data['items'][0]['is_signed']
-                return room_id, uname, is_signed
+                if data != None and len(data) > 0:
+                    room_id = data['items'][0]['roomid']
+                    uname = data['items'][0]['uname']
+                    is_signed = data['items'][0]['is_signed']
+                    return room_id, uname, is_signed
         else:
             return ""
