@@ -30,45 +30,47 @@ def index(name=None):
 
 @app.route('/submit', methods=['POST', 'GET'])
 def submit():
-    if request.method == 'POST':
-        res = []
-        context = request.form['context']
-        context = context.replace(" ", "")
-        if context == "":
-            str = ''
-            return render_template('index.html', context=context, res=str)
-
-        contexts = context.split('\r\n')
-        if len(contexts) == 0:
-            str = ''
-            return render_template('index.html', context=context, res=str)
-
-        for c in contexts:
-            if c == None or c == '':
-                continue
-
-            array = c.split('----')
-            if len(array) == 0:
-                continue
-
-            result = []
-
-            uid = array[0]
-            if is_number(uid) == False:
-                continue
-
-            room_id, uname, is_signed = common.GetSigned(array[0])
-            if room_id != "" and uname != "":
-                result.append(uid)
-                result.append(repr(room_id))
-                result.append(uname)
-                if is_signed == True :
-                    result.append('已签约')
-                else:
-                    result.append('未签约')
-                res.append('----'.join(result))
-        str = '\r\n'.join(res)
+    # if request.method == 'POST':
+    res = []
+    context = request.form['context']
+    context = context.replace(" ", "")
+    if context == "":
+        str = ''
         return render_template('index.html', context=context, res=str)
+
+    contexts = context.split('\r\n')
+    if len(contexts) == 0:
+        str = ''
+        return render_template('index.html', context=context, res=str)
+
+    for c in contexts:
+        if c == None or c == '':
+            continue
+
+        array = c.split('----')
+        if len(array) == 0:
+            continue
+
+        result = []
+
+        uid = array[0]
+        if is_number(uid) == False:
+            continue
+
+        room_id, uname, is_signed = common.GetSigned(array[0])
+        if room_id != "" and uname != "":
+            result.append(uid)
+            result.append(repr(room_id))
+            result.append(uname)
+            if is_signed == True :
+                result.append('已签约')
+            else:
+                result.append('未签约')
+            res.append('----'.join(result))
+        else:
+            print('返回数据错误')
+    str = '\r\n'.join(res)
+    return render_template('index.html', context=context, res=str)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8081)

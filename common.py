@@ -27,11 +27,20 @@ class Common():
         if r.status_code == 200:
             if r.text != "":
                 js = json.loads(r.text)
-                data = js['data']
-                if data != None and len(data) > 0:
-                    room_id = data['items'][0]['roomid']
-                    uname = data['items'][0]['uname']
-                    is_signed = data['items'][0]['is_signed']
-                    return room_id, uname, is_signed
+                if 'data' in js:
+                    data = js['data']
+                    if len(data) != 0:
+                        room_id = data['items'][0]['roomid']
+                        uname = data['items'][0]['uname']
+                        is_signed = data['items'][0]['is_signed']
+                        return room_id, uname, is_signed
+                    else:
+                        "", "", False
+                else:
+                    "", "", False
+            else:
+                "", "", False
         else:
-            return ""
+            return "", "", False
+
+        return "", "", False
