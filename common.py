@@ -9,6 +9,12 @@ class Common():
         with open("cookie", "r") as f:  # 打开文件
             self.cookie_string = f.read()  # 读取文件
 
+    def save_config(self, cookie_string):
+        self.cookie_string = cookie_string
+        fo = open("cookie", "w")
+        fo.write(cookie_string)
+        fo.close()
+
     def GetSigned(self, uid):
 
         header = {

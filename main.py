@@ -28,6 +28,18 @@ def index(name=None):
     res = ''
     return render_template('index.html', context=context, res=res)
 
+@app.route('/config', methods=['POST', 'GET'])
+def config():
+    context = common.cookie_string
+    return render_template('config.html', context=context)
+
+@app.route('/save', methods=['POST', 'GET'])
+def save():
+    context = request.form['context']
+    print('config=' + context)
+    common.save_config(context)
+    return render_template('config.html', context=context)
+
 @app.route('/submit', methods=['POST', 'GET'])
 def submit():
     # if request.method == 'POST':
